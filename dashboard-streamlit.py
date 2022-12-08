@@ -1,37 +1,35 @@
-# Importing packages
-import pandas as pd
-import streamlit as st
+import pandas 
+import streamlit 
 
-# Loading dataset
-registry_df = pd.read_csv('follow_up.csv')
-vehicle_df = pd.read_csv('vehicle_accident_data1.csv')
-# Creating a dashboard header
-st.header('Patient Follow-Up & Vehicle Accident Data')
+# Load Data CSVs
+Education = pandas.read_csv('data/education_data.csv')
+Layoffs = pandas.read_csv('data/layoffs_data.csv')
 
-# Creating a caption
-st.caption('Patient follow-up recorded within the last year')
+# Header
+streamlit.header('US Education Level & Layoff Data')
 
-# Displaying the dataframe
-if st.checkbox('Hospital 03 Follow-Up'):
-    st.dataframe(registry_df)
+### Dataset 1 ####
+# Dropdown Checkbox to View Data
+if streamlit.checkbox('US Education Level Data'):
+    streamlit.dataframe(Education)
+# Barchart
+streamlit.subheader('Bar Chart Visual of Level of Education in US')
+US_Education_Level = Education.loc[Education['Country'] == 'United-States']['Education'].value_counts()
+streamlit.bar_chart(US_Education_Level)
+streamlit.caption('This Figure Illustrates the Education Level of US Citizens')
 
-if st.checkbox('Vehicle Accident Data'):
-    st.dataframe(vehicle_df)
+### Dataset 2 ####
+# Dropdown Checkbox to View Data
+if streamlit.checkbox('US Layoffs Data'):
+    streamlit.dataframe(Layoffs)
+# Line Chart
+streamlit.subheader('Line Chart Visual of Layoffs in US')
+US_Layoffs = Layoffs.loc[Layoffs['Country'] == 'United States']['Industry'].value_counts()
+streamlit.line_chart(US_Layoffs)
+streamlit.caption('This Figure Illustrates The Number of Layoffs in Each State In the US')
 
-# Creating a barchart
-st.subheader('Display of Patients Primary Hospital')
-hosp_num = registry_df['Hospital_Code'].value_counts()
-st.bar_chart(hosp_num)
-st.caption('Visual provides insight of the number of patients per hospital')
-
-# Creating a line chart
-st.subheader('Accidents based on the Day of the Week')
-day_week = vehicle_df['Day_of_Week'].value_counts()
-st.bar_chart(day_week)
-st.caption('Visual provides insight on the popular days of the week for accidents')
-
-# Creating a code block
-code = '''## Code behind the Bar Chart for Day of the Week
-day_week = vehicle_df['Day_of_Week'].value_counts()
-st.bar_chart(day_week)'''
-st.code(code, language='python')
+# Code Block
+code = '''## Code for Dropdown Check Box to View Layoff Data
+if streamlit.checkbox('US Layoffs Data'):
+    streamlit.dataframe(Layoffs)'''
+streamlit.code(code, language='python')
